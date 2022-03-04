@@ -1,37 +1,18 @@
 .tableCustom{
   width: 100%;
-  background-color: #fff;
 // 表头样式设置
   :global .ant-table-thead>tr>th{
     color:black;
     background-color: #fff;
-    text-align: center;
   }
   // 单元格下边框设置
   :global .ant-table-cell{
     border-bottom:10px solid #fff;
   }
-  // 指定排序箭头显示红色
-  :global .ant-table-column-sorter-up.active{
-    color: rgba(255, 0, 0, 0.93);
-  }
-
-  // 滚动条不显示
-  :global .ant-table-body{
-    &::-webkit-scrollbar {
-      overflow-y: hidden;
-    }
-  }
-  // 鼠标经过行不变色
-  :global .ant-tooltip-inner{
-    display: none;
-  }
-
   // 表格中行设置
   .tableRow{
     font-size:16px;
     background-color: rgb(251, 240, 240);
-    text-align: center;
     color:rgb(153, 153, 153)
-    }
+  }
 }

@@ -1,7 +1,7 @@
 /**
  * <p>Title: BONC - React </p>
  *
- * <p>Description:列表 </p>
+ * <p>Description:表格 </p>
  *  <p>Company: 北京东方国信科技股份有限公司 </p>
  *
  * @author wy
@@ -13,10 +13,19 @@ import { Table } from "antd";
 import PropTypes from "prop-types";
 import "./index.less";
 
-export const TableCustom = ({ align, tableData, ...props }) => {
+export const TableCustom = ({
+  sorterColumn,
+  align,
+  tableData,
+  width,
+  ...props
+}) => {
   let tbodyData =
     tableData?.tbody && tableData.tbody.length > 0 ? tableData.tbody : [];
-
+  /**
+   * 列渲染
+   * @returns {*|boolean}
+   */
   const columns = () => {
     let result =
       tableData?.thead &&
@@ -24,53 +33,97 @@ export const TableCustom = ({ align, tableData, ...props }) => {
       tableData.thead.map((item, index) => {
         let res = { ...item };
         res.align = [align];
-        index !== 0 ? (res.sorter = compareFunc(item.dataIndex)) : "";
+        width
+          ? (res.width = width.hasOwnProperty(index) ? width[index] : "")
+          : "";
+        res.sorter = sorterFunc(index, item.dataIndex);
         return res;
       });
     return result;
   };
 
-  const compareFunc = (col) => {
+  /**
+   * 列排序
+   * @param index
+   * @param col
+   * @returns {function(*, *)}
+   */
+  const sorterFunc = (index, col) => {
+    // 排序方法
     let compareSort = (pro, next) => {
-      let a = pro[col] && pro[col].replace(/%/, "");
-      let b = next[col] && next[col].replace(/%/, "");
+      let a = pro[col] && pro[col].replace(/[^\d.]/g, "");
+      let b = next[col] && next[col].replace(/[^\d.]/g, "");
       return a - b;
     };
-    return compareSort;
+    // 某列需要排序
+    if (!sorterColumn.length) return null;
+    if (sorterColumn === "all" || sorterColumn.some((value) => value === index))
+      return compareSort;
   };
 
   return (
-    <div className="tableCustom">
-      <Table
-        columns={columns()}
-        dataSource={tbodyData}
-        bordered={true}
-        rowClassName="tableRow"
-        pagination={false}
-        scroll={{ y: props.scrollY }}
-      />
-    </div>
+    <Table
+      className={"tableCustom"}
+      columns={columns()}
+      dataSource={tbodyData}
+      bordered={props.bordered}
+      rowClassName="tableRow"
+      pagination={false}
+      ellipsis={props.ellipsis}
+      scroll={{ y: props.scrollY }}
+    />
   );
 };
 
 TableCustom.propTypes = {
   /**
-   * Column align
+   * 可排序的列。
+   * 'all'：所有列全排序; [0,1]：仅0和1列排序
+   */
+  sorterColumn: PropTypes.array | PropTypes.string,
+  /**
+   * 列宽{ 0: "20%"}
+   */
+  width: PropTypes.object,
+  /**
+   * 列对齐方式
    */
   align: PropTypes.oneOf(["center", "left", "right"]),
   /**
-   * Y scroll value
+   * 是否有边框
+   */
+  bordered: PropTypes.bool,
+  /**
+   * 超宽度自动省略
+   */
+  ellipsis: PropTypes.bool,
+  /**
+   * 表头背景颜色
+   */
+  headerBackColor: PropTypes.string,
+  /**
+   * 表体背景颜色
+   */
+  bodyBackColor: PropTypes.string,
+  /**
+   * Y轴滚动value
    */
   scrollY: PropTypes.number,
   /**
-   * Table data
+   * 表格数据
    */
   tableData: PropTypes.object,
 };
 
 TableCustom.defaultProps = {
   align: "center",
-  scrollY: 200,
+  bordered: true,
+  sorterColumn: [],
+  headerBackColor: "red",
+  bodyBackColor: "green",
+  scrollY: null,
+  ellipsis: true,
+  width: {},
   tableData: {
     thead: [
       {

@@ -9,6 +9,7 @@ import {useSelector, useStore} from "react-redux";
 import "./index.less";
 import ImgLogo from "../../assets/react-logo.jpg";
 import {TaskList} from "../../components/TaskList/TaskList";
+import {OneTable} from "@/components/Table/Table.stories";
 
 export default function HomePageContainer(props) {
     const tasks = useSelector((state) => {
@@ -23,6 +24,7 @@ export default function HomePageContainer(props) {
       <div className="box">
           {/*{count}*/}
           <TaskList tasks={tasks} />
+          <OneTable />
       </div>
     </div>
   );

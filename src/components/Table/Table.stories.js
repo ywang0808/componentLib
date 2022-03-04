@@ -6,12 +6,11 @@ export default {
   title: "Table",
   component: TableCustom,
   argTypes: {
-    backgroundColor: { control: "color" },
   },
 };
 const Template = (args) => <TableCustom {...args}/>;
 
-export const oneTable = Template.bind({});
-oneTable.args = {
+export const OneTable = Template.bind({});
+OneTable.args = {
   align: "center",
 }
