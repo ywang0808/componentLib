@@ -14,12 +14,18 @@ import PropTypes from "prop-types";
 import "./index.less";
 
 export const TableCustom = ({
+  className,
+  rowClassName,
   sorterColumn,
   align,
   tableData,
   width,
   ...props
 }) => {
+  /**
+   * 表格数据
+   * @type {*|*[]}
+   */
   let tbodyData =
     tableData?.tbody && tableData.tbody.length > 0 ? tableData.tbody : [];
   /**
@@ -32,16 +38,49 @@ export const TableCustom = ({
       tableData.thead.length > 0 &&
       tableData.thead.map((item, index) => {
         let res = { ...item };
-        res.align = [align];
+        // 列排序
+        res.sorter = sorterFunc(index, item.dataIndex);
+        // 居中对齐 + 单元格自动省略
+        if (res.children && res.children.length > 0) {
+          let resItem = res.children.map((i) => {
+            let child = { ...i };
+            child.align = [align];
+            child.ellipsis = props.ellipsis;
+            return child;
+          });
+          res.children = resItem;
+        } else {
+          res.align = [align];
+          res.ellipsis = props.ellipsis;
+        }
+        // 列宽
         width
           ? (res.width = width.hasOwnProperty(index) ? width[index] : "")
           : "";
-        res.sorter = sorterFunc(index, item.dataIndex);
+        // 哪列--几行合并
+        props.rowSpan.hasOwnProperty(index)
+          ? (res.render = rowSpanRender(props.rowSpan[index]))
+          : "";
         return res;
       });
     return result;
   };
-
+  /**
+   *
+   * @returns {(function(*=, *, *): ({children, props: {rowSpan: number}}))|*}
+   */
+  const rowSpanRender = (num) => {
+    return (value, data, index) => {
+      const obj = { children: value, props: { rowSpan: 1 } };
+      if (index % num === 0) {
+        obj.props.rowSpan = num;
+        return obj;
+      } else {
+        obj.props.rowSpan = 0;
+        return obj;
+      }
+    };
+  };
   /**
    * 列排序
    * @param index
@@ -63,28 +102,18 @@ export const TableCustom = ({
 
   return (
     <Table
-      className={"tableCustom"}
+      className={["tableCustom", className].join(" ")}
+      rowClassName={rowClassName}
       columns={columns()}
       dataSource={tbodyData}
       bordered={props.bordered}
-      rowClassName="tableRow"
       pagination={false}
-      ellipsis={props.ellipsis}
       scroll={{ y: props.scrollY }}
     />
   );
 };
 
 TableCustom.propTypes = {
-  /**
-   * 可排序的列。
-   * 'all'：所有列全排序; [0,1]：仅0和1列排序
-   */
-  sorterColumn: PropTypes.array | PropTypes.string,
-  /**
-   * 列宽{ 0: "20%"}
-   */
-  width: PropTypes.object,
   /**
    * 列对齐方式
    */
@@ -94,21 +123,34 @@ TableCustom.propTypes = {
    */
   bordered: PropTypes.bool,
   /**
+   * 可排序的列（提取列数值）.
+   * 'all'：所有列全排序; [0,1]：仅0和1列排序
+   */
+  sorterColumn: PropTypes.array || PropTypes.string,
+  /**
+   * 表格类名
+   */
+  className: PropTypes.string,
+  /**
+   * 行类名
+   */
+  rowClassName: PropTypes.string,
+  /**
+   * 列宽. {0: "20%"}:第0列，宽20%
+   */
+  width: PropTypes.object,
+  /**
    * 超宽度自动省略
    */
   ellipsis: PropTypes.bool,
   /**
-   * 表头背景颜色
-   */
-  headerBackColor: PropTypes.string,
-  /**
-   * 表体背景颜色
-   */
-  bodyBackColor: PropTypes.string,
-  /**
    * Y轴滚动value
    */
   scrollY: PropTypes.number,
+  /**
+   * 几行合并？{0: 4}:第0列，每4行合并
+   */
+  rowSpan: PropTypes.object,
   /**
    * 表格数据
    */
@@ -116,138 +158,17 @@ TableCustom.propTypes = {
 };
 
 TableCustom.defaultProps = {
+  className: "",
+  rowClassName: "",
   align: "center",
-  bordered: true,
+  bordered: false,
   sorterColumn: [],
-  headerBackColor: "red",
-  bodyBackColor: "green",
   scrollY: null,
-  ellipsis: true,
+  ellipsis: false,
   width: {},
+  rowSpan: {},
   tableData: {
-    thead: [
-      {
-        key: "zq",
-        title: "账期111",
-        dataIndex: "zq",
-      },
-      {
-        key: "lw",
-        title: "离网用户数(万户)",
-        dataIndex: "lw",
-      },
-      {
-        key: "zdlw",
-        title: "主动离网用户数(万户)",
-        dataIndex: "zdlw",
-      },
-      {
-        key: "bdlw",
-        title: "被动离网用户数(万户）",
-        dataIndex: "bdlw",
-      },
-      {
-        key: "zwyh",
-        title: "在网用户离网率",
-        dataIndex: "zwyh",
-      },
-      {
-        key: "czyh",
-        title: "出账用户离网率",
-        dataIndex: "czyh",
-      },
-    ],
-    tbody: [
-      {
-        key: "1",
-        zq: "2021年1月",
-        lw: "83.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "2.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "2",
-        zq: "2021年2月",
-        lw: "87.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "5.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "3",
-        zq: "2021年3月",
-        lw: "87",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "6.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "4",
-        zq: "2021年4月",
-        lw: "878",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "7.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "5",
-        zq: "2021年5月",
-        lw: "73.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "8.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "6",
-        zq: "2021年6月",
-        lw: "873.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "29.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "7",
-        zq: "2021年3月",
-        lw: "873.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "32.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "8",
-        zq: "2021年4月",
-        lw: "873.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "42.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "9",
-        zq: "2021年5月",
-        lw: "873.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "52.5%",
-        czyh: "2.9%",
-      },
-      {
-        key: "10",
-        zq: "2021年6月",
-        lw: "873.8",
-        zdlw: "290.2",
-        bdlw: "583.6",
-        zwyh: "26.5%",
-        czyh: "2.9%",
-      },
-    ],
+    thead: [],
+    tbody: [],
   },
 };
