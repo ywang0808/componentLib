@@ -17,7 +17,7 @@ export default function HomePageContainer(props) {
   const count = useSelector((state) => {
     return state.task.count;
   });
-  // console.log("what tasks:", tasks);
+  console.log("what tasks:", tasks);
 
   return (
     <div className="page-home all_nowarp">
