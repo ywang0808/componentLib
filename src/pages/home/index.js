@@ -9,6 +9,7 @@ import "./index.less";
 import ImgLogo from "../../assets/react-logo.jpg";
 import { TaskList } from "../../components/TaskList/TaskList";
 import { SimpleTable, MergedTable } from "@/components/Table/Table.stories";
+import {SimplePie} from "@/components/Pie/Pie.stories";
 
 export default function HomePageContainer(props) {
   const tasks = useSelector((state) => {
@@ -23,9 +24,10 @@ export default function HomePageContainer(props) {
     <div className="page-home all_nowarp">
       <div className="box">
         {/*{count}*/}
+        <SimplePie className="pie"/>
         <TaskList tasks={tasks} />
-        <SimpleTable className="one" rowClassName="rowClassName"/>
-        <MergedTable className="two" rowClassName="rowClassName"/>
+        <SimpleTable className="oneTable" rowClassName="rowClassName"/>
+        <MergedTable className="twoTable" rowClassName="rowClassName"/>
       </div>
     </div>
   );

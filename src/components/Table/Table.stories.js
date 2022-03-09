@@ -1,5 +1,5 @@
 import React from "react";
-import { TableCustom } from "./index";
+import { TableCustom } from "./Table";
 
 export default {
   title: "Table",
