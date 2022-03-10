@@ -5,7 +5,7 @@ import React from "react";
 import { useSelector, useStore } from "react-redux";
 
 /** 所需的各种资源 **/
-import "./index.less";
+import "./home.less";
 import ImgLogo from "../../assets/react-logo.jpg";
 import { TaskList } from "../../components/TaskList/TaskList";
 import { SimpleTable, MergedTable } from "@/components/Table/Table.stories";

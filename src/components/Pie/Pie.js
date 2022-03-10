@@ -10,6 +10,7 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
+import "./Pie.less"
 
 export const Pie = (propArgs) => {
   const { data, color, className, ...props } = propArgs;
@@ -85,12 +86,11 @@ export const Pie = (propArgs) => {
 
   useEffect(renderChart, []);
   useEffect(renderChart, [propArgs]);
-  console.log(propArgs);
+
   return (
     <div
       ref={chartRef}
-      className={[className, "pieStyle"].join(" ")}
-      style={{ width: 400, height: 400, backgroundColor: "#f1e9e9" }}
+      className={["pieStyle", className].join(" ")}
     />
   );
 };
