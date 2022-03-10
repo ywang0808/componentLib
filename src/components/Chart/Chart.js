@@ -39,13 +39,26 @@ export const Chart = (propArgs) => {
         yAxisMax1 = Math.max(...lineData) * 1.2;
       }
     });
+
+  //柱状图背景
+  let barBack = {
+    type: "bar",
+    data: new Array(data?.yData[0].length).fill(0),
+    barWidth: 20,
+    showBackground: true,
+    barGap: "-125%",
+    backgroundStyle: {
+      barBorderRadius: [30, 30, 0, 0],
+      barBorderWidth: 1.5,
+      borderColor: color[0],
+      borderType: "solid",
+      color: "rgba(255,255,255, 1)",
+    },
+  };
   //组件位置，防止输入长度小于4报错
-  let grids = grid;
-  if (grid.length < 4) {
-    for (let i = grid.length; i < 4; i++) {
-      grids.push(0);
-    }
-  }
+  let arrZero = new Array(4 - grid.length).fill(0);
+  let grids = grid.length < 4 ? [...grid, ...arrZero] : grid;
+
   // 渲染组件
   const renderChart = () => {
     const chart = echarts.getInstanceByDom(chartRef.current);
