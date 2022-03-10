@@ -62,27 +62,28 @@ export const Chart = (propArgs) => {
         left: grids[3],
       },
       legend: {
-        left: "2%",
-        top: "2%",
-        data: data?.legend,
+        show: props.legend,
+        fontSize: props.legendFontSize,
+        top: props.legendGridTop,
+        right: props.legendGridRight,
       },
       tooltip: {
-        show: true,
+        show: props.tooltip,
         trigger: "axis",
-        fontSize: 13,
+        textStyle: {
+          fontSize: props.tooltipFontSize,
+        },
         formatter: (params) => {
           let relVal = params[0].name;
           params.length > 0 &&
             params.forEach((item, index) => {
-              index !== 1
-                ? (relVal +=
-                    "<br/>" +
-                    item.marker +
-                    item.seriesName +
-                    "：" +
-                    item.value +
-                    (index === 0 ? data.yName : "%"))
-                : null;
+              relVal +=
+                "<br/>" +
+                item.marker +
+                item.seriesName +
+                "：" +
+                item.value +
+                (index === 0 ? data.yName : "%");
             });
           return relVal;
         },
@@ -91,13 +92,13 @@ export const Chart = (propArgs) => {
         type: "category",
         axisLabel: {
           show: true,
-          fontSize: 14,
-          color:'#666666',
+          fontSize: props.xAxisFontSize, // 14,
+          color: props.axisLabelColor, //"#666666",
         },
         axisLine: {
           show: true,
           lineStyle: {
-            color: "rgba(0,0,0, 0.1)",
+            color: props.axisLineColor, //"rgba(0,0,0, 0.1)",
           },
         },
         xName: data?.xName,
@@ -110,17 +111,17 @@ export const Chart = (propArgs) => {
           position: "left",
           name: data?.yName,
           nameTextStyle: {
-            color: "#666666",
+            color: props.axisLabelColor,
           },
           axisLine: {
             show: true,
             lineStyle: {
-              color: "rgba(0,0,0, 0.1)",
+              color: props.axisLineColor,
             },
           },
           axisLabel: {
-            fontSize: 13,
-            color: "#666666",
+            fontSize: props.xAxisFontSize,
+            color: props.axisLabelColor,
           },
         },
         {
@@ -150,6 +151,10 @@ export const Chart = (propArgs) => {
       series: series,
       dataZoom: {
         show: props.dataZoom,
+        endValue: props.dataZoomEndValue
+          ? props.dataZoomEndValue
+          : data?.xData.length,
+        height: props.dataZoomHeight,
       },
     };
     instance.setOption(option);
@@ -159,13 +164,7 @@ export const Chart = (propArgs) => {
   };
   useEffect(renderChart, []);
   useEffect(renderChart, [props]);
-  return (
-    <div
-      ref={chartRef}
-      className={className}
-      style={{ width: "100%", height: 400 }}
-    />
-  );
+  return <div ref={chartRef} className={[className, "chartStyle"].join(" ")} />;
 };
 Chart.propTypes = {
   /**
@@ -181,9 +180,24 @@ Chart.propTypes = {
    */
   grid: PropTypes.array,
   /**
+   * legend
+   */
+  legend: PropTypes.bool,
+  legendFontSize: PropTypes.number,
+  legendGridTop: PropTypes.string,
+  legendGridLeft: PropTypes.string,
+  /**
    * dataZoom
    */
   dataZoom: PropTypes.bool,
+  /**
+   * dataZoom 高度
+   */
+  dataZoomHeight: PropTypes.number | PropTypes.string,
+  /**
+   * dataZoomEndValue
+   */
+  dataZoomEndValue: PropTypes.number,
   /**
    * bar宽度,可配置为百分比
    */
@@ -193,39 +207,64 @@ Chart.propTypes = {
    */
   barBorderRadius: PropTypes.array,
   /**
+   * tooltip
+   */
+  tooltip: PropTypes.bool,
+  /**
+   * tooltip字体大小
+   */
+  tooltipFontSize: PropTypes.number,
+  /**
+   * x/y轴字体大小、字体颜色、轴线颜色
+   */
+  xAxisFontSize: PropTypes.number,
+  axisLabelColor: PropTypes.string,
+  axisLineColor: PropTypes.string,
+  /**
    * 图表数据
    */
   data: PropTypes.object,
 };
 Chart.defaultProps = {
   dataZoom: true,
+  dataZoomHeight: "3%",
+  dataZoomEndValue: null,
   barWidth: 20,
-  grid: ["8%", "8%", "20%", "8%"],
-  barBorderRadius: [20],
+  grid: ["18%", "8%", "20%", "8%"],
+  barBorderRadius: [0],
   color: ["rgba(240,177,154, 1)", "rgb(146,204,237)", "rgb(255,131,131)"],
+  tooltip: true,
+  tooltipFontSize: 14,
+  xAxisFontSize: 14,
+  axisLabelColor: "#666666",
+  axisLineColor: "rgba(0,0,0,0.1)",
+  legend: true,
+  legendFontSize: 14,
+  legendGridTop: 0,
+  legendGridRight: "2%",
   data: {
     xData: ["Mon", "Tue", "Wed", "全国", "Fri", "Sat", "Sun"],
     yData: [
       {
         id: "sum",
         type: "bar",
-        name: "总数",
+        name: "总数1",
         data: [120, 100, 170, 80, 70, 110, 130],
       },
       {
         id: "sum1",
         type: "line",
-        name: "总数",
+        name: "总数2",
         data: [0.2, 0.3, 0.4, 0.8, 0.27, 0.1, 0.23],
       },
       {
         id: "sum2",
         type: "line",
-        name: "总数",
+        name: "总数3",
         data: [0.24, 0.5, 0.4, 0.7, 0.7, 0.9, 0.3],
       },
     ],
-    legend: ["1", "2", "3"],
+    legend: ["1", "2", "总数3"],
     xName: "",
     yName: "(万户)",
   },
