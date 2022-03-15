@@ -10,15 +10,7 @@ const Template = (args) => <TableCustom {...args} />;
 
 export const SimpleTable = Template.bind({});
 SimpleTable.args = {
-  className: "",
-  rowClassName: "rowClassName",
-  align: "center",
-  bordered: true,
-  sorterColumn: [],
   scrollY: "300px",
-  ellipsis: true,
-  width: {},
-  rowSpan: {},
   tableData: {
     thead: [
       {
@@ -149,13 +141,6 @@ SimpleTable.args = {
 
 export const MergedTable = Template.bind({});
 MergedTable.args = {
-  className: "",
-  rowClassName: "rowClassName",
-  align: "center",
-  bordered: true,
-  sorterColumn: [],
-  scrollY: null,
-  ellipsis: true,
   width: { 0: "10%" },
   rowSpan: { 0: 4 },
   tableData: {

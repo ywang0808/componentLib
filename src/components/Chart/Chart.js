@@ -4,19 +4,20 @@ import PropTypes from "prop-types";
 import "./Chart.less";
 
 export const Chart = (propArgs) => {
-  const { className, color, data, grid, ...props } = propArgs;
+  const { className, color, data, grid, barBack, ...props } = propArgs;
   let instance = null;
   const chartRef = useRef();
 
+  let barSeries;
+  let lineSeries = [];
   let lineData = []; //折线图数据
   let yAxisMax0, yAxisMax1; // 两侧坐标轴最大值-左右
 
-  const series = [];
   data?.yData.length > 0 &&
     data.yData.map((item, index) => {
       if (item.type === "bar") {
         yAxisMax0 = Math.max(...item.data) * 1.2;
-        series.push({
+        barSeries = {
           type: "bar",
           name: item.name,
           barWidth: props.barWidth,
@@ -26,9 +27,9 @@ export const Chart = (propArgs) => {
           },
           data: item.data,
           yAxisIndex: 0,
-        });
+        };
       } else if (item.type === "line") {
-        series.push({
+        lineSeries.push({
           type: "line",
           name: item.name,
           color: color[index],
@@ -41,20 +42,23 @@ export const Chart = (propArgs) => {
     });
 
   //柱状图背景
-  let barBack = {
+  let barBackGround = {
     type: "bar",
-    data: new Array(data?.yData[0].length).fill(0),
-    barWidth: 20,
-    showBackground: true,
-    barGap: "-125%",
+    data: new Array(data?.yData[0].data.length).fill(0),
+    barWidth: barBack.barWidth,
+    showBackground: props.barBackShow,
+    barGap: barBack.barGap, //"-125%",
     backgroundStyle: {
-      barBorderRadius: [30, 30, 0, 0],
-      barBorderWidth: 1.5,
-      borderColor: color[0],
+      color: barBack.backgroundColor, //"rgba(255,255,255, 1)",
+      borderRadius: barBack.backgroundBorderRadius, //[30, 30, 0, 0],
+      borderWidth: barBack.backgroundBorderWidth, //1.5,
+      borderColor: barBack.backgroundBorderColor, //"rgb(146,204,237)",
       borderType: "solid",
-      color: "rgba(255,255,255, 1)",
     },
   };
+  const series = props.barBackShow
+    ? [barSeries, barBackGround, ...lineSeries]
+    : [barSeries, ...lineSeries];
   //组件位置，防止输入长度小于4报错
   let arrZero = new Array(4 - grid.length).fill(0);
   let grids = grid.length < 4 ? [...grid, ...arrZero] : grid;
@@ -228,6 +232,20 @@ Chart.propTypes = {
    */
   tooltipFontSize: PropTypes.number,
   /**
+   * 柱状图是否有背景？
+   */
+  barBackShow: PropTypes.bool,
+  /**
+   * 柱状图背景
+      barGap: "-125%",
+      barWidth: 30,
+      backgroundBorderRadius: [20, 20, 0, 0],
+      backgroundBorderWidth: 1.5,
+      backgroundBorderColor: "white",
+      backgroundColor: "rgba(240,177,154, 1)",
+   */
+  barBack: PropTypes.object,
+  /**
    * x/y轴字体大小、字体颜色、轴线颜色
    */
   xAxisFontSize: PropTypes.number,
@@ -242,9 +260,9 @@ Chart.defaultProps = {
   dataZoom: true,
   dataZoomHeight: "3%",
   dataZoomEndValue: null,
-  barWidth: 20,
+  barWidth: 13,
   grid: ["18%", "8%", "20%", "8%"],
-  barBorderRadius: [0],
+  barBorderRadius: [20, 20, 0, 0],
   color: ["rgba(240,177,154, 1)", "rgb(146,204,237)", "rgb(255,131,131)"],
   tooltip: true,
   tooltipFontSize: 14,
@@ -255,6 +273,15 @@ Chart.defaultProps = {
   legendFontSize: 14,
   legendGridTop: 0,
   legendGridRight: "2%",
+  barBackShow: true,
+  barBack: {
+    barGap: "-125%",
+    barWidth: 20,
+    backgroundBorderRadius: [20, 20, 0, 0],
+    backgroundBorderWidth: 1.5,
+    backgroundBorderColor: "rgba(240,177,154, 1)",
+    backgroundColor: "white",
+  },
   data: {
     xData: ["Mon", "Tue", "Wed", "全国", "Fri", "Sat", "Sun"],
     yData: [

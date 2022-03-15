@@ -13,4 +13,6 @@ export const SimpleBarLines = Template.bind({});
 SimpleBarLines.args = {};
 
 export const BackBarLines = Template.bind({});
-BackBarLines.args = {};
+BackBarLines.args = {
+
+};
