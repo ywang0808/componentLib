@@ -1,5 +1,5 @@
 import React from "react";
-import { TemplateComp } from "./Template";
+import { TemplateComp } from "./TemplateComp";
 
 export default {
   title: "TemplateComp",

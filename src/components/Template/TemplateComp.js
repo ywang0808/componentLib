@@ -10,11 +10,15 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import "./Template.less";
+import "./TemplateComp.less";
 
 export const TemplateComp = (props) => {
   const { align } = props;
-  return <div className="template"/>;
+  return (
+    <div className="template" style={{ textAlign: align }}>
+      123
+    </div>
+  );
 };
 
 TemplateComp.propTypes = {
