@@ -59,6 +59,7 @@ export const Chart = (propArgs) => {
   const series = props.barBackShow
     ? [barSeries, barBackGround, ...lineSeries]
     : [barSeries, ...lineSeries];
+
   //组件位置，防止输入长度小于4报错
   let arrZero = new Array(4 - grid.length).fill(0);
   let grids = grid.length < 4 ? [...grid, ...arrZero] : grid;
@@ -174,7 +175,7 @@ export const Chart = (propArgs) => {
         height: props.dataZoomHeight,
       },
     };
-    instance.setOption(option);
+    instance.setOption(option,true);
     window.addEventListener("resize", () => {
       instance.resize();
     });
