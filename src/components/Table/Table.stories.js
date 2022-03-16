@@ -1,17 +1,275 @@
 import React from "react";
-import { TableCustom } from "./index";
-
+import { TableCustom } from "./Table";
 
 export default {
   title: "Table",
   component: TableCustom,
-  argTypes: {
-    backgroundColor: { control: "color" },
+  argTypes: {},
+};
+const Template = (args) => <TableCustom {...args} />;
+
+export const SimpleTable = Template.bind({});
+SimpleTable.args = {
+  scrollY: "300px",
+  tableData: {
+    thead: [
+      {
+        key: "zq",
+        title: "账期",
+        dataIndex: "zq",
+      },
+      {
+        key: "lw",
+        title: "离网数(万户)",
+        dataIndex: "lw",
+      },
+      {
+        key: "zdlw",
+        title: "主动离网数(万户)",
+        dataIndex: "zdlw",
+      },
+      {
+        key: "bdlw",
+        title: "被动离网数(万户）",
+        dataIndex: "bdlw",
+      },
+      {
+        key: "zwyh",
+        title: "在网离网率",
+        dataIndex: "zwyh",
+      },
+      {
+        key: "czyh",
+        title: "出账离网率",
+        dataIndex: "czyh",
+      },
+    ],
+    tbody: [
+      {
+        key: "1",
+        zq: "2021年1月",
+        lw: "83.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "2.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "2",
+        zq: "2021年2月",
+        lw: "87.8",
+        zdlw: "290.22021年2月2021年2月2021年2月2021年2月2021年2月",
+        bdlw: "583.6",
+        zwyh: "5.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "3",
+        zq: "2021年3月",
+        lw: "87",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "6.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "4",
+        zq: "2021年4月",
+        lw: "878",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "7.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "5",
+        zq: "2021年5月",
+        lw: "73.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "8.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "6",
+        zq: "2021年6月",
+        lw: "873.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "29.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "7",
+        zq: "2021年3月",
+        lw: "873.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "32.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "8",
+        zq: "2021年4月",
+        lw: "873.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "42.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "9",
+        zq: "2021年5月",
+        lw: "873.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "52.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "10",
+        zq: "2021年6月",
+        lw: "873.8",
+        zdlw: "290.2",
+        bdlw: "583.6",
+        zwyh: "26.5%",
+        czyh: "2.9%",
+      },
+    ],
   },
 };
-const Template = (args) => <TableCustom {...args}/>;
 
-export const oneTable = Template.bind({});
-oneTable.args = {
-  align: "center",
-}
+export const MergedTable = Template.bind({});
+MergedTable.args = {
+  width: { 0: "10%" },
+  rowSpan: { 0: 4 },
+  tableData: {
+    thead: [
+      {
+        key: "zq",
+        title: "账期",
+        dataIndex: "zq",
+      },
+      {
+        key: "lw",
+        title: "离网数(万户)",
+        dataIndex: "lw",
+      },
+      {
+        key: "zdlw",
+        title: "主动离网数(万户)",
+        children: [
+          {
+            title: "主动",
+            dataIndex: "age4",
+            key: "age4",
+            width: 150,
+          },
+          {
+            title: "离网",
+            dataIndex: "age5",
+            key: "age5",
+            width: 150,
+          },
+        ],
+      },
+      {
+        key: "bdlw",
+        title: "被动离网数(万户）",
+        dataIndex: "bdlw",
+      },
+      {
+        key: "zwyh",
+        title: "在网离网率",
+        dataIndex: "zwyh",
+      },
+      {
+        key: "czyh",
+        title: "出账离网率",
+        dataIndex: "czyh",
+      },
+    ],
+    tbody: [
+      {
+        key: "1",
+        zq: "2021年1月",
+        lw: "83.8",
+        age4: "12323",
+        age5: "34341",
+        bdlw: "583.6",
+        zwyh: "2.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "2",
+        zq: "2021年2月",
+        lw: "87.8",
+        age4: "35441",
+        age5: "5451",
+        bdlw: "583.6",
+        zwyh: "5.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "3",
+        zq: "2021年3月",
+        lw: "87",
+        age4: "2021年3月2021年3月2021年3月2021年3月",
+        age5: "2021年3月",
+        bdlw: "583.6",
+        zwyh: "6.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "4",
+        zq: "2021年4月",
+        lw: "878",
+        age4: "ewe1qw",
+        age5: "1wrwr",
+        bdlw: "583.6",
+        zwyh: "7.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "5",
+        zq: "2021年5月",
+        lw: "73.8",
+        age4: "wrwer1",
+        age5: "1etet",
+        bdlw: "583.6",
+        zwyh: "8.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "6",
+        zq: "2021年6月",
+        lw: "873.8",
+        age4: "1werq",
+        age5: "wrqrwe1",
+        bdlw: "583.6",
+        zwyh: "29.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "7",
+        zq: "2021年3月",
+        lw: "873.8",
+        age4: "etetsdrt1",
+        age5: "rtdrtrt1",
+        bdlw: "583.6",
+        zwyh: "32.5%",
+        czyh: "2.9%",
+      },
+      {
+        key: "8",
+        zq: "2021年4月",
+        lw: "873.8",
+        age4: "58et3",
+        age5: "5ets831",
+        bdlw: "583.6",
+        zwyh: "42.5%",
+        czyh: "2.9%",
+      },
+    ],
+  },
+};

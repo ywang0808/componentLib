@@ -12,8 +12,7 @@
     "cover": "./node_modules/.bin/istanbul cover _mocha",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "chromatic": "npx chromatic --project-token=a18029ce6ca4"
+    "build-storybook": "build-storybook"
   },
   "author": "Bonc",
   "license": "ISC",
@@ -29,7 +28,7 @@
     "antd": "^4.17.3",
     "axios": "^0.24.0",
     "core-js": "^3.19.3",
-    "echarts": "^5.3.0",
+    "echarts": "^5.2.2",
     "eslint": "^7.32.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
@@ -63,7 +62,6 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-import": "^1.13.3",
-    "chromatic": "^6.5.1",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.1.0",
     "css-loader": "^6.5.1",
